@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0.28
+    container_name: prismasb-container-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: dbname
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+      TZ: Asia/Tokyo
+      LANG: 'C.UTF-8'
+    ports:
+      - '3306:3306'
+    platform: linux/amd64
+    networks:
+      - default
+    volumes:
+      # - ./docker/db/data:/var/lib/mysql:rw
+      - ./docker/db/conf:/etc/mysql/conf.d:ro
+      - ./docker/db/init:/docker-entrypoint-initdb.d:ro
+      - ./docker/db/logs:/var/log/mysql:rw
+
+  node:
+    image: node:16.14.2-buster-slim
+    container_name: prismasb-container-node
+    environment:
+      TZ: Asia/Tokyo
+      DATABASE_URL: 'mysql://user:pass@db:3306/dbname'
+    volumes:
+      - .:/app
+    working_dir: /app
+    tty: true
+
+networks:
+  default:
+    name: prismasb-network-default
