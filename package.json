@@ -15,8 +15,8 @@
         "typescript": "^4.6.3"
     },
     "scripts": {
-        "pull": "prisma db pull",
-        "generate": "prisma generate",
+        "pull": "prisma db pull --schema ./src/prisma/schema.prisma",
+        "generate": "PRISMA_GENERATE_SKIP_AUTOINSTALL=1 prisma generate --schema ./src/prisma/schema.prisma",
         "dev": "ts-node src/main.ts"
     }
 }

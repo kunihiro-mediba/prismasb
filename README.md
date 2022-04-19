@@ -16,6 +16,19 @@ npx prisma init --url mysql://user:pass@localhost:3306/dbname
 
 generate `prisma/schema.prisma` and `.env`
 
+## move and eidt schema
+
+```sh
+mv prisma src/
+```
+
+```diff
+generator client {
+    provider = "prisma-client-js"
++   output   = "."
+}
+```
+
 ## update schema
 
 ```sh
@@ -23,13 +36,13 @@ generate `prisma/schema.prisma` and `.env`
 docker compose up -d
 
 # generate model from database
-npx prisma db pull
+npx prisma db pull --schema src/prisma/schema.prisma
 ```
 
-## generate code (node_modules/.prisma/client)
+## generate code (to ./src/prisma)
 
 ```sh
-npx prisma generate
+PRISMA_GENERATE_SKIP_AUTOINSTALL=1 npx prisma generate --schema src/prisma/schema.prisma
 ```
 
 ## start
